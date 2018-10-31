@@ -2,6 +2,7 @@ import React from "react";
 import { SquareComponent } from "./square-component";
 import {
   createEmptyArray,
+  copyArray,
   checkRow,
   checkCol,
   countMoves,
@@ -16,7 +17,9 @@ export class Board extends React.Component {
       squares: createEmptyArray(),
       xIsNext: true,
       moveCount: 1,
-      points: [0, 0]
+      points: [0, 0],
+      returnCount: [3, 3],
+      history: [{squares: this.squares, xIsNext: this.xIsNext, moveCount: this.moveCount, points: this.points}]
     };
   }
 
@@ -24,9 +27,16 @@ export class Board extends React.Component {
     const squares = this.state.squares.slice(),
       points = this.state.points.slice();
 
-    let newSquares, newMoveCount, winCol, winRow;
+    let newSquares, newMoveCount, winCol, winRow, newHistory;
 
     if (squares[i][j].character === players.valueUnknown) {
+      newHistory = this.state.history;
+      newHistory.push({squares: copyArray(squares), xIsNext: this.state.xIsNext, moveCount: this.state.moveCount, points: this.state.points});
+
+      this.setState({
+        history: newHistory
+      });
+
       squares[i][j].character = this.state.xIsNext
         ? players.valueX
         : players.valueO;
@@ -53,6 +63,35 @@ export class Board extends React.Component {
           moveCount: this.state.moveCount + newMoveCount - 1
         });
       }
+    }
+  }
+
+  returnBack() {
+    let newHistory = this.state.history,
+      length = newHistory.length;
+
+    if(length > 1) {
+      let xIsNext = newHistory[newHistory.length -1].xIsNext,
+        newReturnCount = this.state.returnCount.slice();
+
+      if(xIsNext && newReturnCount[0] > 0) {
+        newReturnCount[0]--;
+      } else if(!xIsNext && newReturnCount[1] > 0) {
+        newReturnCount[1]--;
+      } else {
+        return;
+      }
+
+      let backTo = newHistory.pop();
+
+      this.setState({
+        returnCount: newReturnCount,
+        history: newHistory,
+        squares: backTo.squares,
+        xIsNext: backTo.xIsNext,
+        moveCount: backTo.moveCount,
+        points: backTo.points
+      });
     }
   }
 
@@ -103,6 +142,9 @@ export class Board extends React.Component {
         <div>{status}</div>
         <div>{move}</div>
         <div className="status">{points}</div>
+        <button className="back" onClick={() => this.returnBack()}>
+          cofnij
+        </button>
         {this.createBoard()}
       </div>
     );

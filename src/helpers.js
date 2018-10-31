@@ -25,6 +25,19 @@ export function createEmptyArray() {
     }
     output[i] = tab;
   }
+
+  return output;
+}
+
+export function copyArray(oldArray) {
+  let output = createEmptyArray();
+
+  for (let i = 0; i < boardSize; i++) {
+    for (let j = 0; j < boardSize; j++) {
+      Object.assign(output[i][j], oldArray[i][j]);
+    }
+  }
+
   return output;
 }
 
