@@ -1,0 +1,135 @@
+body {
+    font: 14px "Century Gothic", Futura, sans-serif;
+}
+
+.board-row:after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.square {
+    background: #fff;
+    border: 1px solid #999;
+    float: left;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 34px;
+    height: 34px;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    width: 34px;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.score {
+    &-content {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+
+        &_column {
+            padding: 2px;
+        }
+
+        &_text {
+            text-align: center;
+        }
+
+        &_header {
+            font-size: 10px;
+        }
+    }
+
+    &-returns {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+
+        &_box {
+            width: 40px;
+            height: 6px;
+            background-color: grey;
+            margin: 0 2px 4px;
+
+            &.green {
+                background-color: green;
+            }
+
+            &.orange {
+                background-color: orange;
+            }
+
+            &.red {
+                background-color: red;
+            }
+        }
+    }
+}
+
+.game {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    &-info {
+        margin-left: 20px;
+    }
+
+    &-board {
+        background-color: #33a19b;
+        border: 1px solid #999;
+        border-radius: 2px;
+        width: 320px;
+        display: flex;
+        justify-content: center;
+        -webkit-box-shadow: 1px 3px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 1px 3px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 1px 3px 5px 0px rgba(0,0,0,0.75);
+
+        &_action {
+            min-height: 297px;
+        }
+
+        &_row {
+            display: flex;
+            justify-content: center;
+        }
+
+        &_header {
+            background-color: #97aaa9;
+            display: flex;
+            justify-content: space-around;
+            padding: 20px 0;
+            margin-bottom: 10px;
+            width: 320px;
+        }
+
+        &_score {
+            background-color: #fff;
+            border: 1px solid #999;
+            border-radius: 4px;
+            border-bottom: 4px solid #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 145px;
+            font-size: 24px;
+            font-weight: bold;
+
+            &.active {
+                border-bottom: 4px solid #33a19b;
+            }
+        }
+
+        &_footer {
+            margin-top: 10px;
+            background-color: #97aaa9;
+        }
+    }
+}

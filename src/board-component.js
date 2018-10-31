@@ -1,5 +1,6 @@
 import React from "react";
 import { SquareComponent } from "./square-component";
+import { ScoreComponent } from "./score-component";
 import {
   createEmptyArray,
   copyArray,
@@ -115,7 +116,7 @@ export class Board extends React.Component {
         col.push(this.renderSquare(i, j));
       }
       row.push(
-        <div className="board-row" key={i.toString()}>
+        <div className="game-board_row" key={i.toString()}>
           {col}
         </div>
       );
@@ -124,28 +125,45 @@ export class Board extends React.Component {
   };
 
   render() {
-    let status, points, move;
-    if (this.state.points[0] + this.state.points[1] === maxPoints) {
-      status = `Winner: ${
-        this.state.points[0] > this.state.points[1] ? players.x : players.o
-      } ${Math.max(this.state.points[0], this.state.points[1])}/${maxPoints}`;
-    } else {
-      status = `Player: ${this.state.xIsNext ? players.x : players.o}`;
-      points = `You points: ${
-        this.state.xIsNext ? this.state.points[0] : this.state.points[1]
-      }`;
-      move = `Your moves count: ${this.state.moveCount}`;
-    }
+    // let status, points, move;
+    // if (this.state.points[0] + this.state.points[1] === maxPoints) {
+    //   status = `Winner: ${
+    //     this.state.points[0] > this.state.points[1] ? players.x : players.o
+    //   } ${Math.max(this.state.points[0], this.state.points[1])}/${maxPoints}`;
+    // } else {
+    //   status = `Player: ${this.state.xIsNext ? players.x : players.o}`;
+    //   points = `You points: ${
+    //     this.state.xIsNext ? this.state.points[0] : this.state.points[1]
+    //   }`;
+    //   move = `Your moves count: ${this.state.moveCount}`;
+    // }
 
     return (
       <div>
-        <div>{status}</div>
-        <div>{move}</div>
-        <div className="status">{points}</div>
-        <button className="back" onClick={() => this.returnBack()}>
-          cofnij
-        </button>
-        {this.createBoard()}
+        <div className="game-board_header">
+          <ScoreComponent
+            value={players.x}
+            xIsNext={this.state.xIsNext}
+            points={this.state.points}
+            returnCount={this.state.returnCount[0]}
+            moveCount={this.state.moveCount}
+          />
+          <ScoreComponent
+            value={players.o}
+            xIsNext={this.state.xIsNext}
+            points={this.state.points}
+            returnCount={this.state.returnCount[1]}
+            moveCount={this.state.moveCount}
+          />
+        </div>
+          <div className="game-board_action">
+            {this.createBoard()}
+          </div>
+        <div className="game-board_footer">
+          <button className="back" onClick={() => this.returnBack()}>
+            cofnij
+          </button>
+        </div>
       </div>
     );
   }
