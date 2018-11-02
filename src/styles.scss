@@ -10,7 +10,7 @@ body {
 
 .square {
     background: #fff;
-    border: 1px solid #999;
+    border: 1px solid #33a19b;
     float: left;
     font-size: 24px;
     font-weight: bold;
@@ -105,7 +105,7 @@ body {
             background-color: #97aaa9;
             display: flex;
             justify-content: space-around;
-            padding: 20px 0;
+            padding: 10px 0;
             margin-bottom: 10px;
             width: 320px;
         }
@@ -114,7 +114,7 @@ body {
             background-color: #fff;
             border: 1px solid #999;
             border-radius: 4px;
-            border-bottom: 4px solid #fff;
+            border-bottom: 6px solid #fff;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -123,13 +123,90 @@ body {
             font-weight: bold;
 
             &.active {
-                border-bottom: 4px solid #33a19b;
+                border-bottom: 6px solid #33a19b;
+            }
+        }
+
+        &_winner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-size: 45px;
+            font-weight: 700;
+            color: #97aaa9;
+            padding-top: 40px;
+
+            .winner {
+                font-size: 160px;
             }
         }
 
         &_footer {
             margin-top: 10px;
-            background-color: #97aaa9;
+            display: flex;
+
+            button {
+                background-color: #97aaa9;
+                border: none;
+                font-size: 16px;
+                font-weight: 700;
+                color: #33a19b;
+                padding: 10px 0;
+                width: 50%;
+                position: relative;
+                overflow: hidden;
+                z-index: 5;
+                border-bottom: 4px solid #97aaa9;
+
+                span {
+                    z-index: 20;
+                }
+
+                &.back {
+                    &:hover {
+                        border-right: 1px solid #33a19b;
+
+                        &:after {
+                            left: -5px;
+                        }
+                    }
+
+                    &:after {
+                        transform: rotate(-35deg);
+                        left: 200px;
+                    }
+                }
+
+                &.restart {
+                    &:hover {
+                        border-left: 1px solid #33a19b;
+                    }
+                }
+
+                &:after {
+                    background: #fff;
+                    content: "";
+                    height: 155px;
+                    left: -75px;
+                    opacity: .2;
+                    position: absolute;
+                    top: -50px;
+                    transform: rotate(35deg);
+                    transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+                    width: 50px;
+                    z-index: -10;
+                }
+
+                &:hover {
+                    border-bottom: 4px solid #33a19b;
+
+                    &:after {
+                        left: 70%;
+                        transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+                    }
+                }
+            }
         }
     }
 }

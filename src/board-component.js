@@ -1,6 +1,7 @@
 import React from "react";
 import { SquareComponent } from "./square-component";
 import { ScoreComponent } from "./score-component";
+import { WinnerComponent } from "./winner-component";
 import {
   createEmptyArray,
   copyArray,
@@ -14,7 +15,11 @@ import { players, boardSize, maxPoints } from "./constants";
 export class Board extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = this.initialState;
+  }
+
+  get initialState() {
+    return {
       squares: createEmptyArray(),
       xIsNext: true,
       moveCount: 1,
@@ -71,7 +76,7 @@ export class Board extends React.Component {
     let newHistory = this.state.history,
       length = newHistory.length;
 
-    if(length > 1) {
+    if(length > 1 && !this.isEnd()) {
       let xIsNext = newHistory[newHistory.length -1].xIsNext,
         newReturnCount = this.state.returnCount.slice();
 
@@ -100,7 +105,7 @@ export class Board extends React.Component {
     return (
       <SquareComponent
         key={(i * boardSize + j).toString()}
-        value={this.state.squares[i][j].type()}
+        value={this.state.squares[i][j]}
         onClick={() => this.handleClick(i, j)}
       />
     );
@@ -122,22 +127,19 @@ export class Board extends React.Component {
       );
     }
     return row;
-  };
+  }
+
+  isEnd = () => {
+    return this.state.points[0] + this.state.points[1] === maxPoints;
+  }
+
+  restartGame = () => {
+    if(this.state.history.length > 1) {
+      this.setState(this.initialState);
+    }
+  }
 
   render() {
-    // let status, points, move;
-    // if (this.state.points[0] + this.state.points[1] === maxPoints) {
-    //   status = `Winner: ${
-    //     this.state.points[0] > this.state.points[1] ? players.x : players.o
-    //   } ${Math.max(this.state.points[0], this.state.points[1])}/${maxPoints}`;
-    // } else {
-    //   status = `Player: ${this.state.xIsNext ? players.x : players.o}`;
-    //   points = `You points: ${
-    //     this.state.xIsNext ? this.state.points[0] : this.state.points[1]
-    //   }`;
-    //   move = `Your moves count: ${this.state.moveCount}`;
-    // }
-
     return (
       <div>
         <div className="game-board_header">
@@ -157,11 +159,14 @@ export class Board extends React.Component {
           />
         </div>
           <div className="game-board_action">
-            {this.createBoard()}
+            {this.isEnd() ? <WinnerComponent points={this.state.points} /> : this.createBoard()}
           </div>
         <div className="game-board_footer">
           <button className="back" onClick={() => this.returnBack()}>
-            cofnij
+            <span>BACK MOVE</span>
+          </button>
+          <button className="restart" onClick={() => this.restartGame()}>
+            <span>RESTART GAME</span>
           </button>
         </div>
       </div>
