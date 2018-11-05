@@ -4,7 +4,7 @@ const classNames = require('classnames');
 
 export function SquareComponent(props) {
     return (
-        <button className={classNames("square", { "row": props.value.row }, { "col": props.value.col })} onClick={props.onClick}>
+        <button className={classNames("square", props.value.rowClassName, props.value.colClassName)} onClick={props.onClick}>
             {props.value.type()}
         </button>
     );

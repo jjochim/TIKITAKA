@@ -3,7 +3,9 @@ import { players, boardSize, pointsRange } from "./constants";
 const Square = function() {
   this.character = players.valueUnknown;
   this.row = false;
+  this.rowClassName = "";
   this.col = false;
+  this.colClassName = "";
 };
 
 Object.defineProperties(Square.prototype, {
@@ -44,57 +46,97 @@ export function copyArray(oldArray) {
 export function checkRow(arrayOfSquares, indexRow, indexCol) {
   let player = arrayOfSquares[indexRow][indexCol].character,
     go = true,
-    empty = false,
+    isEmpty = 0,
     _indexCol = indexCol - 1,
     correctRow = [];
 
   while (indexCol < boardSize && go) {
-    arrayOfSquares[indexRow][indexCol].character === player
-      ? correctRow.push(indexCol)
-      : (go = false);
-    if (arrayOfSquares[indexRow][indexCol].row === false) empty = true;
+    let square = arrayOfSquares[indexRow][indexCol];
+
+    if (square.character === player) {
+      correctRow.push(indexCol);
+
+      if (square.row === false) isEmpty++;
+    } else {
+      go = false;
+    }
+
     indexCol++;
   }
 
   go = true;
 
   while (_indexCol >= 0 && go) {
-    arrayOfSquares[indexRow][_indexCol].character === player
-      ? correctRow.push(_indexCol)
-      : (go = false);
-    if (arrayOfSquares[indexRow][_indexCol].row === false) empty = true;
+    let square = arrayOfSquares[indexRow][_indexCol];
+
+    if (square.character === player) {
+      correctRow.push(_indexCol);
+
+      if (square.row === false) isEmpty++;
+    } else {
+      go = false;
+    }
+
     _indexCol--;
   }
 
-  return correctRow.length % pointsRange === 0 && empty ? correctRow : [];
+  return correctArray(correctRow, isEmpty);
 }
 
 export function checkCol(arrayOfSquares, indexRow, indexCol) {
   let player = arrayOfSquares[indexRow][indexCol].character,
     go = true,
-    empty = false,
+    isEmpty = 0,
     _indexRow = indexRow - 1,
     correctCol = [];
 
   while (indexRow < boardSize && go) {
-    arrayOfSquares[indexRow][indexCol].character === player
-      ? correctCol.push(indexRow)
-      : (go = false);
-    if (arrayOfSquares[indexRow][indexCol].col === false) empty = true;
+    let square = arrayOfSquares[indexRow][indexCol];
+
+    if (square.character === player) {
+      correctCol.push(indexRow);
+
+      if (square.col === false) isEmpty++;
+    } else {
+      go = false;
+    }
+
     indexRow++;
   }
 
   go = true;
 
   while (_indexRow >= 0 && go) {
-    arrayOfSquares[_indexRow][indexCol].character === player
-      ? correctCol.push(_indexRow)
-      : (go = false);
-    if (arrayOfSquares[_indexRow][indexCol].col === false) empty = true;
+    let square = arrayOfSquares[_indexRow][indexCol];
+
+    if (square.character === player) {
+      correctCol.push(_indexRow);
+
+      if (square.col === false) isEmpty++;
+    } else {
+      go = false;
+    }
+
     _indexRow--;
   }
 
-  return correctCol.length % pointsRange === 0 && empty ? correctCol : [];
+  return correctArray(correctCol, isEmpty);
+}
+
+function correctArray(array, isEmpty) {
+  let length = array.length,
+    isBusy = length - isEmpty,
+    output = [];
+
+  if (length > 2 && length < 6 && isBusy === 0) {
+    output = array.slice(0,3);
+  } else if (length > 6 && length < 9 && isEmpty > 3) {
+    output = array.slice(0,6);
+  } else if(length % pointsRange === 0 && isEmpty > 0) {
+    output = array;
+  }
+
+  return output;
 }
 
 export function countMoves(correctTab) {
@@ -108,13 +150,62 @@ export function setFlag(
   indexRow,
   indexCol
 ) {
-  correctRow.forEach(value => {
+  correctRow.sort().forEach((value, index) => {
     arrayOfSquares[indexRow][value].row = true;
+    arrayOfSquares[indexRow][value].rowClassName = `row-${toWords(index + 1)}-of-${toWords(correctRow.length)}`;
   });
 
-  correctCol.forEach(value => {
+  correctCol.sort().forEach((value, index) => {
     arrayOfSquares[value][indexCol].col = true;
+    arrayOfSquares[value][indexCol].colClassName = `col-${toWords(index + 1)}-of-${toWords(correctCol.length)}`;
   });
 
   return arrayOfSquares;
+}
+
+function toWords(number) {
+  let output = "";
+  switch (number) {
+    case 1:
+      output = "one";
+    break;
+
+    case 2:
+      output = "two";
+    break;
+
+    case 3:
+      output = "three";
+    break;
+
+    case 4:
+      output = "four";
+    break;
+
+    case 5:
+      output = "five";
+    break;
+
+    case 6:
+      output = "six";
+    break;
+
+    case 7:
+      output = "seven";
+    break;
+
+    case 8:
+      output = "eight";
+    break;
+
+    case 9:
+      output = "nine";
+    break;
+
+    default:
+      output = "";
+    break;
+  }
+
+  return output;
 }
