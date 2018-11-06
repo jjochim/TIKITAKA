@@ -10,7 +10,7 @@ export function ScoreComponent(props) {
         points = props.value === players.x ? props.points[0] : props.points[1];
 
     return (
-        <div className={classNames("game-board_score", { "active": active })}>
+        <div className={classNames("game-board_score", { "active": active }, `player-${props.value}`)}>
             <div className="score-content">
                 <div className="score-content_column">
                     <div className="score-content_header">Player</div>

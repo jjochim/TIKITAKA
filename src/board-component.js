@@ -12,6 +12,8 @@ import {
 } from "./helpers";
 import { players, boardSize, maxPoints } from "./constants";
 
+const classNames = require('classnames');
+
 export class Board extends React.Component {
   constructor(props) {
     super(props);
@@ -162,7 +164,7 @@ export class Board extends React.Component {
             {this.isEnd() ? <WinnerComponent points={this.state.points} /> : this.createBoard()}
           </div>
         <div className="game-board_footer">
-          <button className="back" onClick={() => this.returnBack()}>
+          <button className={classNames("back", {"disable": (this.state.xIsNext && this.state.returnCount[0] === 0) || (!this.state.xIsNext && this.state.returnCount[0] === 0)})} onClick={() => this.returnBack()}>
             <span>BACK MOVE</span>
           </button>
           <button className="restart" onClick={() => this.restartGame()}>

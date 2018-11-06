@@ -152,60 +152,27 @@ export function setFlag(
 ) {
   correctRow.sort().forEach((value, index) => {
     arrayOfSquares[indexRow][value].row = true;
-    arrayOfSquares[indexRow][value].rowClassName = `row-${toWords(index + 1)}-of-${toWords(correctRow.length)}`;
+    arrayOfSquares[indexRow][value].rowClassName = `row${getClassName(correctRow, index)}`;
   });
 
   correctCol.sort().forEach((value, index) => {
     arrayOfSquares[value][indexCol].col = true;
-    arrayOfSquares[value][indexCol].colClassName = `col-${toWords(index + 1)}-of-${toWords(correctCol.length)}`;
+    arrayOfSquares[value][indexCol].colClassName = `col${getClassName(correctCol, index)}`;
   });
 
   return arrayOfSquares;
 }
 
-function toWords(number) {
-  let output = "";
-  switch (number) {
-    case 1:
-      output = "one";
-    break;
+function getClassName(array, index) {
+  let className = "";
 
-    case 2:
-      output = "two";
-    break;
-
-    case 3:
-      output = "three";
-    break;
-
-    case 4:
-      output = "four";
-    break;
-
-    case 5:
-      output = "five";
-    break;
-
-    case 6:
-      output = "six";
-    break;
-
-    case 7:
-      output = "seven";
-    break;
-
-    case 8:
-      output = "eight";
-    break;
-
-    case 9:
-      output = "nine";
-    break;
-
-    default:
-      output = "";
-    break;
+  if(index === 0) {
+    className = "-start";
+  } else if (index === array.length - 1) {
+    className = "-end";
+  } else {
+    className = "-middle"
   }
 
-  return output;
+  return className;
 }
