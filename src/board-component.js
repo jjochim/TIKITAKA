@@ -2,6 +2,7 @@ import React from "react";
 import { SquareComponent } from "./square-component";
 import { ScoreComponent } from "./score-component";
 import { WinnerComponent } from "./winner-component";
+import SweetAlert from 'sweetalert-react';
 import {
   createEmptyArray,
   copyArray,
@@ -27,6 +28,7 @@ export class Board extends React.Component {
       moveCount: 1,
       points: [0, 0],
       returnCount: [3, 3],
+      show: false,
       history: [{squares: this.squares, xIsNext: this.xIsNext, moveCount: this.moveCount, points: this.points}]
     };
   }
@@ -167,8 +169,16 @@ export class Board extends React.Component {
           <button className={classNames("back", {"disable": (this.state.xIsNext && this.state.returnCount[0] === 0) || (!this.state.xIsNext && this.state.returnCount[0] === 0)})} onClick={() => this.returnBack()}>
             <span>BACK MOVE</span>
           </button>
-          <button className="restart" onClick={() => this.restartGame()}>
+          <button className="restart" onClick={() => this.setState({ show: true })}>
             <span>RESTART GAME</span>
+            <SweetAlert
+              show={this.state.show}
+              title="RESTART GAME"
+              text="Are you sure?"
+              showCancelButton={true}
+              onConfirm={() => this.restartGame()}
+              onCancel={() => this.setState({ show: false })}
+            />
           </button>
         </div>
       </div>
